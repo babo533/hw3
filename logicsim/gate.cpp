@@ -88,3 +88,38 @@ Event* Or2Gate::update(uint64_t current_time)
 	}
   return e;
 }
+
+  NotGate::NotGate(Wire* input, Wire* output) : Gate(1, output) {
+    wireInput(0, input); // Wiring the input wire
+  }
+
+  Event* NotGate::update(uint64_t current_time) {
+    char state = 'X'; // Default to 'X' to represent an unknown state
+    Event* e = nullptr;
+
+    for(auto w : m_inputs) {
+        char in = w->getState();
+
+        // Implementing NOT logic 
+        if(in == '0') {
+            state = '1'; // Invert 0 to 1
+            break; // Since there's only one input, we can break after processing
+        } else if (in == '1') {
+            state = '0'; // Invert 1 to 0
+            break; // Since there's only one input, we can break after processing
+        } else if(in == 'X') {
+            state = 'X'; // If input is 'X', output remains 'X'
+            break;
+        }
+    }
+
+    // Check if the state has changed and create an event if so
+    if (state != m_current_state) {
+        m_current_state = state;
+        uint64_t next = current_time + m_delay; // Calculate the time for the next event
+        e = new Event{next, m_output, state};
+    }
+
+    return e; // Return the event
+}
+

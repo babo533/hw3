@@ -4,20 +4,35 @@
 #include <vector>
 #include <stdexcept>
 
-// Use inheritance from std::vector (choose public/private) as appropriate
 template <typename T>
-class Stack 
+class Stack : public std::vector<T> 
 {
 public:
-    Stack();
-    ~Stack();
-    bool empty() const;
-    size_t size() const;
-    void push(const T& item);
-    void pop();  // throws std::underflow_error if empty
-    const T& top() const; // throws std::underflow_error if empty
-    // Add other members only if necessary
+    Stack() : std::vector<T>(){
+
+    }
+    ~Stack(){
+
+    }
+
+    void push(const T& item) {
+        this->push_back(item); // Access inherited method
+    }
+    
+    void pop() {
+        if (this->empty()) { // Use this-> to access inherited methods
+            throw std::underflow_error("Stack is empty.");
+        }
+        this->pop_back();
+    }
+
+    // throws std::underflow_error if empty
+    const T& top() const {
+        if (this->empty()) {
+            throw std::underflow_error("Stack is empty.");
+        }
+        return this->back(); // Access the last element
+    }
 };
 
-
-#endif
+#endif // STACK_H

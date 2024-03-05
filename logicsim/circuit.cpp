@@ -4,7 +4,6 @@
 #include <sstream>
 #include <fstream>
 
-//#include "../heap.h" //bring in your heap implementation
 #include "../heap.h"
 #include "wire.h"
 #include "gate.h"
@@ -110,6 +109,15 @@ bool Circuit::parse(const char* fname)
                     m_gates.push_back(new Or2Gate(m_wires[stoi(s_in1)], m_wires[stoi(s_in2)], m_wires[stoi(s_output)]));
                 }
                 //Add code here to support the NOT gate type
+                if (s_type == "NOT") {
+                    std::string s_in1;
+                    getline(ss, s_in1, ','); // Read the single input wire ID
+                    // Read directly the output wire ID since it's the next in the sequence
+                    std::string s_output;
+                    getline(ss, s_output, ',');
+                    // Create a new NotGate with the parsed input and output wire IDs
+                    m_gates.push_back(new NotGate(m_wires[stoi(s_in1)], m_wires[stoi(s_output)]));
+                } 
             }
         }
         if(line == "INJECT")

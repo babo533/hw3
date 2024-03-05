@@ -86,7 +86,35 @@ int main(int argc, char* argv[])
     print(head);
 
     // Test out your linked list code
+    Node* newHead = new Node(2, nullptr); // Add nullptr as the second argument
+    newHead->next = new Node(4, nullptr);
+    newHead->next->next = new Node(8, nullptr);
+    newHead->next->next->next = new Node(3, nullptr);
+    
+    Node* smaller = nullptr;
+    Node* larger = nullptr;
+    
+    llpivot(newHead, smaller, larger, 5);
+    
+    std::cout << "Smaller: ";
+    print(smaller);
+    
+    std::cout << "Larger: ";
+    print(larger);
 
+    llpivot(head, smaller, larger, 10);
+    
+    std::cout << "Smaller: ";
+    print(smaller);
+    
+    std::cout << "Larger: ";
+    print(larger);
+
+    //deallocate the lists to avoid memory leaks
+    dealloc(smaller);
+    dealloc(larger);
+    dealloc(head);
+    dealloc(newHead);
 
 
     
